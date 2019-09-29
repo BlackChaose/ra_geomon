@@ -6,7 +6,14 @@
 
         <title>Laravel</title>
 
-        <!-- Fonts -->
+        <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js"
+  type="text/javascript" charset="utf-8"></script>
+        <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js"
+  type="text/javascript" charset="utf-8"></script>
+  <script src="{{ asset('js/app.js') }}"></script>
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+
+       <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 
         <!-- Styles -->
@@ -64,40 +71,54 @@
         </style>
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
+    <div style="width: 640px; height: 480px" id="mapContainer"></div>
+  <script>
+    // Initialize the platform object:
+    var platform = new H.service.Platform({
+    'apikey': 'hcydRypsVM_4kOjabJHEUWxDcP45lfzKvkmK2CHSNoY'
+    });
+    var curCoord={lng: 52.5, lat: 13.4};
+    var getLng = function(){
+        return curCoord.lng; 
+    };
 
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
+    var getLat = function(){
+        return curCoord.lat; 
+    };
 
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
+    var setLng = function(a){
+        curCoord.lng = a;
+        return curCoord; 
+    };
+    var setLat = function(a){
+        curCoord.lat = a;
+        return curCoord; 
+    };
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://vapor.laravel.com">Vapor</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                    <br>
-                    <hr>
-                    <p>это просто текст</p>
-                </div>
-            </div>
-        </div>
+    var getCoord=function(){return curCoord;}
+
+    if ("geolocation" in navigator) {
+  /* geolocation is available */
+    navigator.geolocation.getCurrentPosition(function(position) {
+    // Obtain the default map types from the platform object
+    var maptypes = platform.createDefaultLayers();
+    console.log(position);
+    var crd =     {
+      zoom: 12,
+      center: {lng: position.coords.latitude, lat: position.coords.longitude}
+    };
+    var map =  new H.Map(
+    document.getElementById('mapContainer'),
+    maptypes.vector.normal.map,
+    crd,
+    console.log(crd),
+    );
+    });
+    } else {
+  /* geolocation IS NOT available */
+        console.log('!');
+    }
+    console.log('====>',curCoord);
+  </script>
     </body>
 </html>
