@@ -21,7 +21,8 @@
 	 "node-notifier": ">=8.0.1",
 	 "axios": ">=0.21.2",
 	 "elliptic": ">=6.5.4",
-	 "is-svg": ">=4.2.2"
+	 "is-svg": ">=4.2.2",
+	 "y18n": ">=4.0.1"
 	},
     "devDependencies": {
         "axios": "^0.19",
